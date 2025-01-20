@@ -48,7 +48,7 @@ class UpgradeSubState extends FlxSubState {
 
 		closeBtn = new FlxButton(0, 0, "Close", closeSub);
 		closeBtn.screenCenter();
-		closeBtn.y = heal.y + heal.height + 16;
+		closeBtn.y = defUp.y + defUp.height + 16;
 		
 		var bg: FlxSprite = new FlxSprite();
 		bg.makeGraphic(
@@ -66,6 +66,7 @@ class UpgradeSubState extends FlxSubState {
         add(atkUp);
         add(speedUp);
         add(heal);
+        add(defUp);
 		add(closeBtn);
 	}
 	

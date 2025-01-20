@@ -31,7 +31,7 @@ class BattleState extends FlxState {
         pastEDamage = 0;
         pastPDamage = 0;
 
-        e = new Enemy(Main.eLevel);
+        e = new Enemy();
         add(e);
 
         playerAtkVisual = new FlxSprite(e.x - 10, e.y - 10);
@@ -39,10 +39,10 @@ class BattleState extends FlxState {
         playerAtkVisual.animation.add('slash', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 8, false);
         add(playerAtkVisual);
 
-        text = Util.createText(50, 50, ' HP: ${Main.player.hp} \n ATB: ${Main.player.atkAmount}', 16);
+        text = Util.createText(50, 50, ' HP: ${Main.player.hp} \n ATB: ${Main.player.atkAmount} / ${Main.player.atkMax}', 16);
         add(text);
 
-        eT = Util.createText(150, 150, 'Bird HP: ${e.hp}');
+        eT = Util.createText(150, 150, 'E HP: ${e.hp}');
         add(eT);
 
         damagesT = Util.createText(FlxG.width / 2, 120, 'E: 0 | P: 0', 12);
@@ -78,13 +78,11 @@ class BattleState extends FlxState {
 
             if (e.hp <= 0 || Main.player.hp <= 0) {
                 if (e.hp <= 0) {
-                    Main.player.reward(Main.eLevel);
-                    Main.eLevel += 1;
-                    battleOver(null);
+                    battleOver();
                 } else {
                     skullSprite.animation.play('shake');
                     var timer:FlxTimer = new FlxTimer();
-                    timer.start(3, battleOver, 0);
+                    timer.start(3, playerDied, 0);
                     add(skullSprite);
                     playerAlive = false;
                     text.color = FlxColor.RED;
@@ -101,11 +99,21 @@ class BattleState extends FlxState {
 
 
         text.text = ' HP: ${Main.player.hp} \n ATB: ${Main.player.atkAmount}';
-        eT.text = 'Bird HP: ${e.hp}';
+        eT.text = 'HP: ${e.hp}';
         damagesT.text = 'E:${pastEDamage} | P: ${pastPDamage}';
 	}
 
-    function battleOver(_) {
+    function battleOver() {
+        if (Main.eType == EType.Bird) {
+            Main.player.reward(Main.birdLevel);
+            Main.birdLevel += 1;
+        } else if (Main.eType == EType.Slime) {
+            Main.player.reward(Main.slimeLevel);
+            Main.slimeLevel += 1;
+        }
+        FlxG.switchState(new PlayState());
+    }
+    function playerDied(_) {
         FlxG.switchState(new PlayState());
     }
 }

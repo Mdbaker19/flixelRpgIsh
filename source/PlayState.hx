@@ -21,9 +21,8 @@ class PlayState extends FlxState {
 		gameSave = new FlxSave();
 		gameSave.bind("accountSave");
 
-        battleButton = new FlxButton((FlxG.width / 2) - 8, FlxG.height / 2, "Fight", clickBattle);
+        battleButton = new FlxButton(FlxG.width / 2, FlxG.height / 2, "Fight", clickBattle);
         add(battleButton);
-
 
         upgradeButton = new FlxButton(battleButton.x, battleButton.y + battleButton.height + 8, "Upgrade", clickUpgrade);
         add(upgradeButton);
@@ -45,7 +44,7 @@ class PlayState extends FlxState {
 	}
 
 	function clickBattle() {
-        FlxG.switchState(new BattleState());
+        FlxG.switchState(new EPickState());
     }
 
 	function clickUpgrade() {
@@ -55,7 +54,8 @@ class PlayState extends FlxState {
 	function clickSave() {
 		trace('Is save currently there? : ${gameSave.isEmpty()}');
 		gameSave.data.player = Main.player;
-		gameSave.data.eLvl = Main.eLevel;
+		gameSave.data.birdLevel = Main.birdLevel;
+		gameSave.data.slimeLevel = Main.slimeLevel;
 		var isSaved: Bool = gameSave.flush();
 		trace('Did we save? : ${isSaved}');
 	}
@@ -65,9 +65,11 @@ class PlayState extends FlxState {
 			trace("Player not there sorry");
 		} else {
 			trace('Loading player hp: ${gameSave.data.player.hp}');
-			trace('Loading e level: ${gameSave.data.eLvl}');
+			trace('Loading birdLevel: ${gameSave.data.birdLevel}');
+			trace('Loading slimeLevel: ${gameSave.data.slimeLevel}');
 			Main.player = gameSave.data.player;
-			Main.eLevel = gameSave.data.eLvl;
+			Main.birdLevel = gameSave.data.birdLevel;
+			Main.slimeLevel = gameSave.data.slimeLevel;
 		}
 	}
 

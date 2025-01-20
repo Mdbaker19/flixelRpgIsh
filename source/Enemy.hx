@@ -14,13 +14,22 @@ class Enemy extends FlxSprite {
     var atkTime: Float = 0;
     public var attacked: Bool = false;
 
-    public function new(lvl: Float) {
+    public function new() {
         super((FlxG.width / 2) - sizeH, (FlxG.height / 2) - sizeH);
-        loadGraphic('assets/images/birdMan.png', true, 90, 90);
-        animation.add('idle', [0], 0, false);
-        animation.add('open', [0, 1, 2], 2);
-        animation.play('idle');
-        this.level = lvl;
+
+        if (Main.eType == EType.Bird) {
+            loadGraphic('assets/images/birdMan.png', true, 90, 90);
+            animation.add('idle', [0], 0, false);
+            animation.add('open', [0, 1, 2], 2);
+            animation.play('idle');
+            this.level = Main.birdLevel;
+        } else if (Main.eType == EType.Slime) {
+            loadGraphic('assets/images/slimemold.png', true, 90, 60);
+            animation.add('idle', [0, 1, 2], 3);
+            animation.add('open', [3, 4, 5, 6], 3);
+            animation.play('idle');
+            this.level = Main.slimeLevel;
+        }
         this.setStats();
     }
 
